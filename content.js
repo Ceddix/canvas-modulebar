@@ -1,24 +1,24 @@
 window.addEventListener('load', function() {
     // --- Configuration for Static Sidebar Colors (in rgb format) ---
     const sidebarStaticColors = {
-        background: 'rgb(255, 255, 255)',                 // Main sidebar background (white)
-        text: 'rgb(100, 100, 100)',                          // Main text color (dark gray/black)
-        headerBackground: 'rgb(209, 209, 209)',           // Sidebar header background (very light gray)
-        binnenknopje: 'rgb(0, 0, 0)',                    // Sidebar header text (and close button icon)
-        moduleHeaderBackground: 'rgb(233, 233, 233)',     // Module section header background (off-white)
-        moduleHeaderText: 'rgb(59, 59, 59)',              // Module section header text
-        moduleHeaderHoverBackground: 'rgb(233, 236, 239)',// Module section header hover background (light gray)
-        moduleLinkText: 'rgb(33, 37, 41)',                // Standard module link text
-        moduleLinkActiveBackground: 'rgb(218, 255, 233)', // Background for active module links (light blue)
-        moduleLinkActiveText: 'rgb(0, 0, 0)',             // Text for active module links (black)
-        iconColor: 'rgb(85, 85, 85)',                     // Color for icons within module links (medium gray)
-        borderColor: 'rgb(222, 226, 230)',                // Border color for elements
-        openButtonBackground: 'rgb(240, 240, 240)',       // Background for the 'open sidebar' button
-        openButtonText: 'rgb(33, 37, 41)',                // Text for the 'open sidebar' button
-        scrollBarThumb: 'rgb(193, 193, 193)',             // Scrollbar thumb color
-        scrollBarTrack: 'rgb(241, 241, 241)'              // Scrollbar track color
+        background: 'rgb(255, 255, 255)',                  // Main sidebar background (white)
+        text: 'rgb(100, 100, 100)',                        // Main text color (dark gray/black)
+        //headerBackground: 'rgb(209, 209, 209)',          // Sidebar header background (very light gray)
+        binnenknopje: 'rgb(0, 0, 0)',                      // Sidebar header text (and close button icon)
+        moduleHeaderBackground: 'rgb(233, 233, 233)',      // Module section header background (off-white)
+        moduleHeaderText: 'rgb(59, 59, 59)',               // Module section header text
+        moduleHeaderHoverBackground: 'rgb(233, 236, 239)', // Module section header hover background (light gray)
+        moduleLinkText: 'rgb(33, 37, 41)',                 // Standard module link text
+        moduleLinkActiveBackground: '#273540',             // Background for active module links (light blue)
+        moduleLinkActiveText: 'white',                     // Text for active module links (black)
+        iconColor: 'rgb(85, 85, 85)',                      // Color for icons within module links (medium gray)
+				activeIconColor: 'white',                          // Color for icons when module is active
+        borderColor: 'rgb(222, 226, 230)',                 // Border color for elements
+        openButtonBackground: 'transparent',               // Background for the 'open sidebar' button
+        openButtonText: '#273540',                         // Text for the 'open sidebar' button
+        scrollBarThumb: 'rgb(193, 193, 193)',              // Scrollbar thumb color
+        scrollBarTrack: 'rgb(241, 241, 241)'               // Scrollbar track color
     };
-
 
     // Function to remove the specified support buttons
     function removeSupportButtons() {
@@ -63,33 +63,43 @@ window.addEventListener('load', function() {
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
+		
+		const newSidebarContainer = document.createElement('div');
+		const newSidebarWidth = '364px';
+		newSidebarContainer.id = 'custom-sidebar-container';
+		newSidebarContainer.style.position = 'fixed';
+    newSidebarContainer.style.top = '0';
+    newSidebarContainer.style.left = '0';
+		newSidebarContainer.style.width = '448px';
+		newSidebarContainer.style.height = '100vh';
+    newSidebarContainer.style.transform = 'matrix(1, 0, 0, 1, 0, 0)';
+		newSidebarContainer.style.zIndex = '99';
+    newSidebarContainer.style.display = 'none';
+		newSidebarContainer.style.transition = 'transform 0.25s ease-out';
+    newSidebarContainer.style.transform = `translateX(-${newSidebarWidth})`;
+		newSidebarContainer.style.overflowY = 'scroll';
+    //newSidebarContainer.style.scrollbarWidth = 'none'; // Firefox
+    //newSidebarContainer.style.msOverflowStyle = 'none'; // IE10+
+		newSidebarContainer.style.boxShadow = 'rgba(0, 0, 0, 0.25) 0px 0px 1.75rem';
+		newSidebarContainer.style.clipPath = 'inset(0 -1.75rem 0 0)';
+		newSidebarContainer.style.backgroundColor = sidebarStaticColors.background;
 
     const newSidebar = document.createElement('div');
     newSidebar.id = 'custom-sidebar';
-    const newSidebarWidth = '330px';
-    newSidebar.style.position = 'fixed';
-    newSidebar.style.top = '0';
-    newSidebar.style.left = '0';
-    newSidebar.style.height = '100vh';
-    newSidebar.style.width = newSidebarWidth;
-    newSidebar.style.overflowY = 'scroll';
-    newSidebar.style.scrollbarWidth = 'none'; // Firefox
-    newSidebar.style.msOverflowStyle = 'none'; // IE10+
-    newSidebar.style.backgroundColor = sidebarStaticColors.background;
+		newSidebar.style.marginLeft = '84px';
+		newSidebar.style.padding = '1.5rem';
     newSidebar.style.color = sidebarStaticColors.text;
-    newSidebar.style.zIndex = '1000';
-    newSidebar.style.display = 'none';
-    newSidebar.style.boxShadow = '2px 0 5px rgba(0, 0, 0, 0.2)'; // Softer shadow for light theme
-    newSidebar.style.borderRadius = '0 10px 10px 0';
-    newSidebar.style.transition = 'transform 0.25s ease-out';
-    newSidebar.style.transform = `translateX(-${newSidebarWidth})`;
+    //newSidebar.style.transition = 'transform 0.25s ease-out';
+    //newSidebar.style.transform = `translateX(-${newSidebarWidth})`;
     newSidebar.style.boxSizing = 'border-box';
+		
+		newSidebarContainer.appendChild(newSidebar);
 
     // Apply custom scrollbar styles for a more consistent look
-    const scrollbarStyle = document.createElement('style');
+    /*const scrollbarStyle = document.createElement('style');
     scrollbarStyle.innerHTML = `
         #custom-sidebar::-webkit-scrollbar {
-            display: none; /* Chrome/Safari/Edge */
+            display: none; // Chrome/Safari/Edge
         }
         #custom-sidebar::-webkit-scrollbar-track {
             background: ${sidebarStaticColors.scrollBarTrack};
@@ -102,11 +112,10 @@ window.addEventListener('load', function() {
         #custom-sidebar::-webkit-scrollbar-thumb:hover {
             background: ${shadeColor(sidebarStaticColors.scrollBarThumb, -0.2)}; // Darken thumb on hover
         }
-    `;
-    document.head.appendChild(scrollbarStyle);
+    `;*/
+    //document.head.appendChild(scrollbarStyle);
 
-
-    const secondToggleButton = document.createElement('button'); // This is the close sidebar button
+    /*const secondToggleButton = document.createElement('button'); // This is the close sidebar button
     secondToggleButton.innerHTML = '&#8592;'; // Left arrow
     secondToggleButton.style.backgroundColor = 'transparent';
     secondToggleButton.style.color = sidebarStaticColors.binnenknopje;
@@ -137,33 +146,66 @@ window.addEventListener('load', function() {
     sidebarHeader.style.boxSizing = 'border-box';
 
     sidebarHeader.appendChild(secondToggleButton);
+    newSidebar.appendChild(sidebarHeader);*/
+		
+		const sidebarHeader = document.createElement('h2');
+		sidebarHeader.textContent = 'Modules';
+    sidebarHeader.style.fontFamily = 'LatoWeb, "Lato Extended", Lato, "Helvetica Neue", Helvetica, Arial, sans-serif';
+		sidebarHeader.style.fontSize = '1.375rem';
+		sidebarHeader.style.fontWeight = '700';
+		sidebarHeader.style.color = '#002855';
+		sidebarHeader.style.lineHeight = '1.25';
+		sidebarHeader.style.margin = '0';
+		
+		const sidebarBreak = document.createElement('hr');
+		sidebarBreak.style.margin = '20px 0';
+		sidebarBreak.style.border = '0';
+		sidebarBreak.style.borderTop = '1px solid #e8eaec';
+		sidebarBreak.style.borderBottom = 'none';
+
     newSidebar.appendChild(sidebarHeader);
+		newSidebar.appendChild(sidebarBreak);
 
     const elementsToMove = []; // Elements that should move with the sidebar
 
-    const thirdButtonContainer = document.createElement('div'); // Container for the open sidebar button
-    thirdButtonContainer.style.position = 'fixed';
-    thirdButtonContainer.style.top = '0px';
-    thirdButtonContainer.style.left = '0px';
-    thirdButtonContainer.style.zIndex = '900'; // Below sidebar but above content
-    thirdButtonContainer.style.transition = 'transform 0.25s ease-out, display 0s linear 0.25s'; // Delay display change
+    const thirdToggleButton = document.createElement('div'); // This is the open sidebar button
+    thirdToggleButton.style.position = 'fixed';
+    thirdToggleButton.style.bottom = '0px';
+    thirdToggleButton.style.left = '0px';
+		thirdToggleButton.style.width = 'calc(68px - 0.5rem)';
+		thirdToggleButton.style.margin = '0.75rem 0.5rem';
+		thirdToggleButton.style.padding = '0.25rem';
+		thirdToggleButton.style.borderRadius = '0.375rem';
+		thirdToggleButton.style.cursor = 'pointer';
+		thirdToggleButton.style.display = 'flex';
+    thirdToggleButton.style.flexDirection = 'column'; // Stack vertically
+    thirdToggleButton.style.alignItems = 'center';    // Center horizontally
+    thirdToggleButton.style.zIndex = '900'; // Below sidebar but above content
+    thirdToggleButton.style.transition = 'background-color 0.2s ease';
 
-    const thirdToggleButton = document.createElement('button'); // This is the open sidebar button
-    thirdToggleButton.innerHTML = '&#8594;'; // Right arrow
-    thirdToggleButton.style.backgroundColor = sidebarStaticColors.openButtonBackground;
-    thirdToggleButton.style.color = sidebarStaticColors.openButtonText;
-    thirdToggleButton.style.padding = '28px 30px'; // Made symmetric
-    thirdToggleButton.style.border = 'none';
-    thirdToggleButton.style.borderRadius = '0 5px 5px 0';
-    thirdToggleButton.style.cursor = 'pointer';
-    thirdToggleButton.style.fontSize = '24px';
-    thirdToggleButton.style.lineHeight = '1';
-    thirdToggleButton.style.zIndex = '900';
-    thirdToggleButton.style.boxShadow = '1px 0 3px rgba(0,0,0,0.15)'; // Softer shadow
-    thirdToggleButton.style.transition = 'background-color 0.2s ease, transform 0.25s ease-out';
+    const thirdToggleButtonIcon = document.createElement('div'); // This is the open sidebar button icon
+    thirdToggleButtonIcon.innerHTML = '&#8594;'; // Right arrow
+    thirdToggleButtonIcon.style.backgroundColor = sidebarStaticColors.openButtonBackground;
+    thirdToggleButtonIcon.style.color = sidebarStaticColors.openButtonText;
+    thirdToggleButtonIcon.style.border = 'none';
+    thirdToggleButtonIcon.style.fontSize = '24px';
+    thirdToggleButtonIcon.style.lineHeight = '1';
+    thirdToggleButtonIcon.style.zIndex = '900';
+    thirdToggleButtonIcon.style.transition = 'background-color 0.2s ease, transform 0.25s ease-out';
+		
+		const thirdToggleButtonText = document.createElement('div'); // This is the open sidebar button txt
+		thirdToggleButtonText.innerHTML = 'Modules';
+		thirdToggleButtonText.style.position = 'static';
+		thirdToggleButtonText.style.color = sidebarStaticColors.openButtonText;
+		thirdToggleButtonText.style.textAlign = 'center';
+		thirdToggleButtonText.style.display = 'block';
+		thirdToggleButtonText.style.lineHeight = '1.4';
+		thirdToggleButtonText.style.margin = '3px 0 0';
+		thirdToggleButtonText.style.fontSize = '12.5px';
 
-    thirdButtonContainer.appendChild(thirdToggleButton);
-    document.body.appendChild(thirdButtonContainer);
+    thirdToggleButton.appendChild(thirdToggleButtonIcon);
+		thirdToggleButton.appendChild(thirdToggleButtonText);
+    document.body.appendChild(thirdToggleButton);
 
     let sidebarVisible = false;
     let allowCloseOnDocumentReEnter = false;
@@ -173,16 +215,22 @@ window.addEventListener('load', function() {
         sidebarVisible = true;
         allowCloseOnDocumentReEnter = false;
 
-        thirdButtonContainer.style.display = 'none'; // Hide immediately
-        newSidebar.style.display = 'block';
-        newSidebar.style.transform = `translateX(-${newSidebarWidth})`; // Ensure starting position for animation
+        //thirdToggleButton.style.display = 'none'; // Hide immediately
+				
+				// Style the button to look like an active module item
+				thirdToggleButton.style.backgroundColor = sidebarStaticColors.moduleLinkActiveBackground;
+        thirdToggleButtonIcon.style.color = sidebarStaticColors.moduleLinkActiveText;
+        thirdToggleButtonText.style.color = sidebarStaticColors.moduleLinkActiveText;
+				
+        newSidebarContainer.style.display = 'block';
+        newSidebarContainer.style.transform = `translateX(-${newSidebarWidth})`; // Ensure starting position for animation
         
         requestAnimationFrame(() => { // Next frame to trigger transition
-            newSidebar.style.transform = 'translateX(0)';
+            newSidebarContainer.style.transform = 'translateX(0)';
             elementsToMove.forEach(element => {
                 if (element) element.style.transform = `translateX(${newSidebarWidth})`;
             });
-            thirdButtonContainer.style.transform = `translateX(${newSidebarWidth})`; // Move container with sidebar
+            //thirdToggleButton.style.transform = `translateX(${newSidebarWidth})`; // Move container with sidebar
         });
         restoreScrollPosition();
     }
@@ -193,39 +241,50 @@ window.addEventListener('load', function() {
         allowCloseOnDocumentReEnter = false;
 
         saveScrollPosition();
-        newSidebar.style.transform = `translateX(-${newSidebarWidth})`;
+        newSidebarContainer.style.transform = `translateX(-${newSidebarWidth})`;
         elementsToMove.forEach(element => {
             if (element) element.style.transform = 'translateX(0)';
         });
-        thirdButtonContainer.style.transform = 'translateX(0)'; // Move container back
+        //thirdToggleButton.style.transform = 'translateX(0)'; // Move container back
 
         function afterCloseTransition() {
             if (!sidebarVisible) { // Check state again in case of rapid toggles
-                newSidebar.style.display = 'none';
-                thirdButtonContainer.style.display = 'block'; // Show after transition
+                newSidebarContainer.style.display = 'none';
+                //thirdToggleButton.style.display = 'block'; // Show after transition
+								
+								// Reset to original transparent/default style
+                thirdToggleButton.style.backgroundColor = 'transparent';
+                thirdToggleButtonIcon.style.color = sidebarStaticColors.openButtonText;
+                thirdToggleButtonText.style.color = sidebarStaticColors.openButtonText;
             }
-            newSidebar.removeEventListener('transitionend', afterCloseTransition);
+            newSidebarContainer.removeEventListener('transitionend', afterCloseTransition);
         }
-        newSidebar.addEventListener('transitionend', afterCloseTransition);
+        newSidebarContainer.addEventListener('transitionend', afterCloseTransition);
 
         // Fallback timeout in case transitionend doesn't fire (e.g., element removed or display:none too early)
         setTimeout(() => {
-            if (!sidebarVisible && newSidebar.style.display !== 'none') {
-                newSidebar.style.display = 'none';
-                thirdButtonContainer.style.display = 'block';
-                newSidebar.removeEventListener('transitionend', afterCloseTransition);
+            if (!sidebarVisible && newSidebarContainer.style.display !== 'none') {
+                newSidebarContainer.style.display = 'none';
+                //thirdToggleButton.style.display = 'block';
+								
+								// Reset to original transparent/default style
+                thirdToggleButton.style.backgroundColor = 'transparent';
+                thirdToggleButtonIcon.style.color = sidebarStaticColors.openButtonText;
+                thirdToggleButtonText.style.color = sidebarStaticColors.openButtonText;
+								
+                newSidebarContainer.removeEventListener('transitionend', afterCloseTransition);
             }
         }, 300); // Should be slightly longer than transition duration
     }
 
-    secondToggleButton.addEventListener('click', closeSidebar);
+    //secondToggleButton.addEventListener('click', closeSidebar);
     thirdToggleButton.addEventListener('mouseover', openSidebar);
 
-    newSidebar.addEventListener('mouseenter', function() {
+    newSidebarContainer.addEventListener('mouseenter', function() {
         allowCloseOnDocumentReEnter = false;
     });
 
-    newSidebar.addEventListener('mouseleave', function(event) {
+    newSidebarContainer.addEventListener('mouseleave', function(event) {
         if (!sidebarVisible) return;
 
         const isLeavingViewport = event.clientX <= 0 || event.clientY <= 0 ||
@@ -238,9 +297,9 @@ window.addEventListener('load', function() {
             if (!event.relatedTarget) {
                 allowCloseOnDocumentReEnter = true;
                 document.documentElement.addEventListener('mouseover', handleDocumentReEnterForClose, { once: true });
-            } else if (!newSidebar.contains(event.relatedTarget) &&
+            } else if (!newSidebarContainer.contains(event.relatedTarget) &&
                        event.relatedTarget !== thirdToggleButton &&
-                       !thirdButtonContainer.contains(event.relatedTarget) ) {
+                       !thirdToggleButton.contains(event.relatedTarget) ) {
                 closeSidebar();
             }
         }
@@ -248,9 +307,9 @@ window.addEventListener('load', function() {
 
     function handleDocumentReEnterForClose(event) {
         if (sidebarVisible && allowCloseOnDocumentReEnter) {
-            if (!newSidebar.contains(event.target) &&
+            if (!newSidebarContainer.contains(event.target) &&
                 event.target !== thirdToggleButton &&
-                !thirdButtonContainer.contains(event.target)) {
+                !thirdToggleButton.contains(event.target)) {
                 closeSidebar();
             }
         }
@@ -258,7 +317,7 @@ window.addEventListener('load', function() {
     }
 
     function saveScrollPosition() {
-        const scrollPosition = newSidebar.scrollTop;
+        const scrollPosition = newSidebarContainer.scrollTop;
         if (chrome && chrome.storage && chrome.storage.local) {
             chrome.storage.local.set({ 'sidebarScrollPosition': scrollPosition });
         }
@@ -268,7 +327,7 @@ window.addEventListener('load', function() {
         if (chrome && chrome.storage && chrome.storage.local) {
             chrome.storage.local.get(['sidebarScrollPosition'], function(result) {
                 if (result && result.sidebarScrollPosition !== undefined) {
-                    newSidebar.scrollTop = result.sidebarScrollPosition;
+                    newSidebarContainer.scrollTop = result.sidebarScrollPosition;
                 }
             });
         }
@@ -317,7 +376,7 @@ window.addEventListener('load', function() {
         console.log("Custom Script: Removed existing breadcrumbs div");
     }
 
-    let barContainer; // This is the top course navigation bar, not the sidebar itself
+    /*let barContainer; // This is the top course navigation bar, not the sidebar itself
 
     fetch('/courses/') // Relative URL assuming same origin
         .then(response => {
@@ -435,7 +494,7 @@ window.addEventListener('load', function() {
             barContainer.style.top = '0';
         }
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
-    }, false);
+    }, false);*/
 
     const currentPathCourseIdMatch = window.location.pathname.match(/\/courses\/(\d+)/);
     if (currentPathCourseIdMatch && currentPathCourseIdMatch[1]) {
@@ -486,16 +545,10 @@ window.addEventListener('load', function() {
             titleElement.classList.add('module-header-title');
             titleElement.style.cursor = 'pointer';
             titleElement.style.marginTop = '15px';
-            titleElement.style.marginBottom = '8px';
-            titleElement.style.padding = '12px 15px';
-            titleElement.style.borderRadius = '0px';
+            titleElement.style.marginBottom = '2px';
             titleElement.style.fontWeight = '600';
-            titleElement.style.transition = 'background-color 0.2s ease';
-            titleElement.style.boxSizing = 'border-box';
-            titleElement.style.backgroundColor = sidebarStaticColors.moduleHeaderBackground;
+						titleElement.style.fontSize = '1.2rem';
             titleElement.style.color = sidebarStaticColors.moduleHeaderText;
-            titleElement.onmouseover = () => titleElement.style.backgroundColor = sidebarStaticColors.moduleHeaderHoverBackground;
-            titleElement.onmouseout = () => titleElement.style.backgroundColor = sidebarStaticColors.moduleHeaderBackground;
             headerContainer.appendChild(titleElement);
 
             const moduleItemsContainer = document.createElement('div');
@@ -506,8 +559,8 @@ window.addEventListener('load', function() {
             moduleItemsContainer.style.display = isOpen ? 'block' : 'none';
             if (isOpen) moduleStates[moduleKey] = true; // Ensure it's set if defaulting to open
 
-            moduleItemsContainer.style.marginLeft = '10px';
-            moduleItemsContainer.style.paddingLeft = '5px';
+            //moduleItemsContainer.style.marginLeft = '10px';
+            //moduleItemsContainer.style.paddingLeft = '5px';
 
             let currentSubheaderDiv = null;
             const moduleItemsOriginal = header.nextElementSibling?.querySelectorAll('.context_module_item') || [];
@@ -540,18 +593,14 @@ window.addEventListener('load', function() {
 
                     const moduleItemDiv = document.createElement('div');
                     moduleItemDiv.classList.add('module-item-entry');
-                    moduleItemDiv.style.padding = '2px 0';
-                    moduleItemDiv.style.borderBottom = `0.5px solid ${sidebarStaticColors.borderColor}`;
-                    moduleItemDiv.style.marginLeft = '-30px';
-                    moduleItemDiv.style.paddingLeft = '30px';
                     
                     // Add top border only if this is the first module item in the section
-                    if (
+                    /*if (
                         (!currentSubheaderDiv && moduleItemsContainer.querySelectorAll('.module-item-entry').length === 0) ||
                         (currentSubheaderDiv && currentSubheaderDiv.querySelectorAll('.module-item-entry').length === 0)
                     ) {
                         moduleItemDiv.style.borderTop = `0.5px solid ${sidebarStaticColors.borderColor}`;
-                    }
+                    }*/
                     
 
                     const clonedLink = document.createElement('a');
@@ -584,7 +633,8 @@ window.addEventListener('load', function() {
 
                     const iconContainerOriginal = item.querySelector('.ig-type-icon');
                     let selectedIconClone = null;
-                    if (iconContainerOriginal) {
+										
+                    /*if (iconContainerOriginal) {
                         const iconOriginal = iconContainerOriginal.querySelector('i, svg, .fontello-icon, .material-icons, [class*="icon-"]');
                         if (iconOriginal) {
                             selectedIconClone = iconOriginal.cloneNode(true);
@@ -597,7 +647,52 @@ window.addEventListener('load', function() {
                                 selectedIconClone.classList.remove('tooltip'); // Remove default tooltips if any
                             }
                         }
-                    }
+                    }*/
+										
+										if (iconContainerOriginal) {
+												// Select all possible icon types
+												const allIcons = iconContainerOriginal.querySelectorAll('i, svg, img, .fontello-icon, .material-icons, [class*="icon-"]');
+												let iconOriginal = null;
+
+												// Iterate to find the single visible icon
+												const row = iconContainerOriginal.closest('li.context_module_item');
+												if (row) {
+														if (row.classList.contains('assignment')) {
+																iconOriginal = iconContainerOriginal.querySelector('.icon-assignment');
+																
+														} else if (row.classList.contains('quiz')) {
+																iconOriginal = iconContainerOriginal.querySelector('.icon-quiz');
+														} else if (row.classList.contains('discussion_topic')) {
+																iconOriginal = iconContainerOriginal.querySelector('.icon-discussion');
+														} else if (row.classList.contains('attachment')) {
+																iconOriginal = iconContainerOriginal.querySelector('.icon-paperclip');
+														} else if (row.classList.contains('external_url') || row.classList.contains('context_external_tool')) {
+																iconOriginal = iconContainerOriginal.querySelector('.icon-link');
+														} else if (row.classList.contains('wiki_page')) {
+																iconOriginal = iconContainerOriginal.querySelector('.icon-document');
+														}
+												}
+
+												if (iconOriginal) {
+														selectedIconClone = iconOriginal.cloneNode(true);
+
+														// Standard styling
+														selectedIconClone.style.marginRight = '10px';
+														selectedIconClone.style.width = '16px';
+														selectedIconClone.style.height = '16px';
+														selectedIconClone.style.flexShrink = '0';
+
+														// Only apply text color if it's a font-icon (<i>), not an image (<img>)
+														if (iconOriginal.tagName.toLowerCase() !== 'img') {
+																selectedIconClone.style.color = sidebarStaticColors.iconColor;
+														}
+
+														if (selectedIconClone.classList) {
+																selectedIconClone.classList.remove('tooltip'); 
+														}
+												}
+										}
+										
                     if (!selectedIconClone) { // Fallback icon
                         selectedIconClone = document.createElement('span');
                         selectedIconClone.innerHTML = '&#8226;'; // Bullet point
@@ -606,6 +701,13 @@ window.addEventListener('load', function() {
                         selectedIconClone.style.width = '16px';
                         selectedIconClone.style.height = '16px';
                         selectedIconClone.style.textAlign = 'center';
+                        //selectedIconClone.style.color = sidebarStaticColors.iconColor;
+                    }
+										
+                    // Check if the parent link is active and update icon color accordingly
+                    if (clonedLink.classList.contains('module-link-active')) {
+                        selectedIconClone.style.color = sidebarStaticColors.activeIconColor;
+                    } else {
                         selectedIconClone.style.color = sidebarStaticColors.iconColor;
                     }
 
@@ -620,6 +722,7 @@ window.addEventListener('load', function() {
                     } else {
                         moduleItemsContainer.appendChild(moduleItemDiv);
                     }
+										
                 }
             });
 
@@ -642,7 +745,7 @@ window.addEventListener('load', function() {
     }
 
 
-    document.body.appendChild(newSidebar);
+    document.body.appendChild(newSidebarContainer);
 
     // Inject CSS for blue hover effect on module links
     const hoverStyle = document.createElement('style');
@@ -650,31 +753,18 @@ window.addEventListener('load', function() {
     #custom-sidebar a.module-link::before {
         content: "";
         position: absolute;
-        top: -2px;
-        bottom: -2px;
-        left: -30px; /* Extend to left */
-        right: -8px; /* Slightly extend right */
-        background-color: rgba(217, 235, 255, 0.8);
-        border-radius: 6px;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background-color: rgba(0, 0, 0, 0.2);
+				border-radius: 0.375rem;
         z-index: -1;
         opacity: 0;
         transition: opacity 0s ease;
     }
-    #custom-sidebar a.module-link span:hover {
-    text-decoration: underline;
-    }
     #custom-sidebar a.module-link:hover::before {
         opacity: 1;
-    }
-    
-    #custom-sidebar a.module-link:hover {
-        color: #000000 !important;
-    }
-    
-    #custom-sidebar a.module-link:hover span,
-    #custom-sidebar a.module-link:hover i,
-    #custom-sidebar a.module-link:hover [class*="icon-"] {
-        color: rgb(0, 0, 0) !important;
     }
     `;
     
