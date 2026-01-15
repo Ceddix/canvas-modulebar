@@ -1,6 +1,9 @@
 # Canvas Module Bar
 
-A browser extension designed to improve navigation within the Canvas LMS by adding a dedicated sidebar or top bar for quick module access.
+A browser extension designed to improve navigation within the Canvas LMS by adding a dedicated sidebar or top bar for quick module access. In addition, this version will modernize the sidebar provided by Canvas.
+
+**See the image felow for an example:**
+<img width="1716" height="1000" alt="image" src="https://github.com/user-attachments/assets/fd100ce3-3593-4cf1-b95c-67f0f15ab4f5" />
 
 ## Features
 * **Quick Navigation**: Jump between course modules without returning to the home page.
